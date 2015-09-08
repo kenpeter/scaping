@@ -36,6 +36,8 @@ request(main_url, function (error, response, body) {
         if(_is_internal_url(img_url, main_domain_name)) {
           //console.log('-internal-');
           //console.log(img_url);
+
+          _complete_url(img_url, main_domain_name);
         }
         else {
           //console.log('-ex-');
@@ -71,4 +73,29 @@ http://ssps.unimelb.edu.au/sites/ssps.unimelb.edu.au/files/styles/medium/public/
   else {
     return false;
   }
+}
+
+
+function _complete_url(url, domain_name) {
+  //test
+  debugger;
+
+  var complete_url = url;
+  var protocol = 'http';
+  if(url.charAt(0) == '/' && url.charAt(1) != '/') {
+    // /sites/ssps.unimelb.edu.au/files/images/employment-services-logos_2.png
+    complete_url = protocol + '://' + domain_name + url;
+  }
+  else if(url.charAt(0) == '/' && url.charAt(1) == '/') {
+    //ssps.unimelb.edu.au/sites/ssps.unimelb.edu.au/files/styles/medium/public/Jenny%2C%20Mark%2C%20Damon%20and%20Siobhan-6.jpg?itok=D0xCvOZ0
+    complete_url = protocol + ':' + url;
+  }
+  else {
+    // No need to complete.
+
+  }
+
+  console.log(complete_url);
+
+  return complete_url;
 }
