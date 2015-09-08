@@ -1,2 +1,5 @@
 out.txt
 node_modules
+*.jpg
+*.png
+*.pdf

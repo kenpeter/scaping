@@ -4,13 +4,42 @@
 // http://www.smashingmagazine.com/2015/04/web-scraping-with-nodejs/
 
 var request = require("request");
+var http = require('http');
 var cheerio = require("cheerio");
 var parse_url = require("parse_url");
+
+var math = require('mathjs');
 var fs = require('fs');
 
 var main_url = "http://ssps.unimelb.edu.au/research/employment-services-research-projects"; 
 
 var main_domain_name = parse_url(main_url).domain;
+
+// http://stackoverflow.com/questions/19739755/nodejs-callbacks-simple-example
+/*
+var save_image_callback = function(url) {
+  //test
+  //debugger;
+
+  request(url, {encoding: 'binary'}, function(error, response, body){
+    fs.writeFile('download.jpg', body, 'binary', function(err){
+
+    });
+  });
+}
+*/
+
+var save_image_callback = function(url) {
+  //test
+  debugger;
+
+  var random = math.random(100);
+  var file_name = 'img_' + random + '.jpg';
+  var file = fs.createWriteStream(file_name);
+  var request = http.get(url, function(response) {
+    response.pipe(file);
+  });
+}
 
 
 request(main_url, function (error, response, body) {
@@ -37,7 +66,7 @@ request(main_url, function (error, response, body) {
           //console.log('-internal-');
           //console.log(img_url);
 
-          _complete_url(img_url, main_domain_name);
+          img_url = _complete_url(img_url, main_domain_name, save_image_callback);
         }
         else {
           //console.log('-ex-');
@@ -76,7 +105,7 @@ http://ssps.unimelb.edu.au/sites/ssps.unimelb.edu.au/files/styles/medium/public/
 }
 
 
-function _complete_url(url, domain_name) {
+function _complete_url(url, domain_name, callback) {
   //test
   debugger;
 
@@ -95,7 +124,9 @@ function _complete_url(url, domain_name) {
 
   }
 
-  console.log(complete_url);
+  //console.log(complete_url);
+  callback(complete_url);
 
   return complete_url;
 }
+
