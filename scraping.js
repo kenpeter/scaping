@@ -14,27 +14,24 @@ var fs = require('fs');
 var main_url = "http://ssps.unimelb.edu.au/research/employment-services-research-projects"; 
 
 var main_domain_name = parse_url(main_url).domain;
+var saved_img_file_path = "../ssps_scaping/img";
 
-// http://stackoverflow.com/questions/19739755/nodejs-callbacks-simple-example
-/*
-var save_image_callback = function(url) {
-  //test
-  //debugger;
 
-  request(url, {encoding: 'binary'}, function(error, response, body){
-    fs.writeFile('download.jpg', body, 'binary', function(err){
-
-    });
-  });
-}
-*/
-
+// http://stackoverflow.com/questions/11944932/how-to-download-a-file-with-node-js
 var save_image_callback = function(url) {
   //test
   debugger;
 
-  var random = math.random(100);
-  var file_name = 'img_' + random + '.jpg';
+  // http://stackoverflow.com/questions/4758103/last-segment-of-url
+  var file_name = url.substr(url.lastIndexOf('/') + 1);
+  if(file_name.lastIndexOf('?') > -1 ) {
+    file_name = file_name.substr(0, file_name.lastIndexOf('?'));
+  }
+  else {
+
+  }
+
+  var file_name = saved_img_file_path + "/" + file_name;
   var file = fs.createWriteStream(file_name);
   var request = http.get(url, function(response) {
     response.pipe(file);
